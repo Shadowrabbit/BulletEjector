@@ -22,7 +22,7 @@ public class BulletEjectorMod : ModBehaviour
     /// <summary>
     /// Harmony实例，用于应用补丁
     /// </summary>
-    private Harmony _harmony;
+    private Harmony _harmony = null!;
 
     /// <summary>
     /// Mod初始化方法
