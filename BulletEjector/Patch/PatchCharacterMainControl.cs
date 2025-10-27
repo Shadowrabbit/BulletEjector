@@ -8,6 +8,7 @@
 // ******************************************************************
 
 using System.Collections.Generic;
+using System.Linq;
 using BulletEjector.Extensions;
 using HarmonyLib;
 using ItemStatsSystem;
@@ -101,18 +102,20 @@ public static class PatchCharacterMainControl
     /// </summary>
     private static void StripBulletsFromWeapon(Item weapon)
     {
-        var bullets = weapon.StripBullets();
-        if (bullets.Count == 0) return;
-        Debug.Log($"[BulletEjector] Stripped {bullets.Count} bullets from weapon {weapon.DisplayName}");
-        // 将子弹添加回角色Inventory
-        foreach (var bullet in bullets)
+        var bulletItems = weapon.StripBullets();
+        if (bulletItems.Count == 0) return;
+        // 计算总子弹数量（包括堆叠）
+        var totalBulletCount = bulletItems.Sum(bullet => bullet?.StackCount ?? 0);
+        Debug.Log($"[BulletEjector] Stripped {totalBulletCount} bullets from weapon {weapon.DisplayName}");
+        // 将子弹Item添加回角色Inventory
+        foreach (var bulletItem in bulletItems)
         {
-            if (bullet == null) continue;
+            if (bulletItem == null) continue;
             var rootItem = weapon.GetRoot();
-            var added = rootItem.Inventory?.AddAndMerge(bullet) ?? false;
+            var added = rootItem.Inventory?.AddAndMerge(bulletItem) ?? false;
             if (!added)
             {
-                Debug.LogError($"[BulletEjector] Failed to add bullet {bullet.DisplayName} back to Inventory");
+                Debug.LogError($"[BulletEjector] Failed to add bullet {bulletItem.DisplayName} back to Inventory");
             }
         }
     }

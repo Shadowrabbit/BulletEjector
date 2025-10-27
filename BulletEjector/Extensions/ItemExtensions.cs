@@ -35,26 +35,26 @@ public static class ItemExtensions
             return strippedBullets;
         }
 
-        // 手动移除武器内的所有子弹，不调用TakeOutAllBullets
+        // 获取武器内的所有子弹Item（每个Item可能包含多个堆叠）
         var bulletsToRemove = new List<Item>();
-        foreach (var bullet in weapon.Inventory)
+        foreach (var item in weapon.Inventory)
         {
-            if (bullet != null && bullet.GetBool("IsBullet"))
+            if (item != null && item.GetBool("IsBullet"))
             {
-                bulletsToRemove.Add(bullet);
+                bulletsToRemove.Add(item);
             }
         }
 
-        // 从武器中移除子弹（使用公开API）
-        foreach (var bullet in bulletsToRemove)
+        // 从武器中移除子弹Item（包含所有堆叠）
+        foreach (var bulletItem in bulletsToRemove)
         {
-            weapon.Inventory.RemoveItem(bullet);
-            strippedBullets.Add(bullet);
+            weapon.Inventory.RemoveItem(bulletItem);
+            strippedBullets.Add(bulletItem);
         }
 
         // 使内部缓存失效，下一次读取时会根据Inventory重新计算
         var cacheField = AccessTools.Field(typeof(ItemSetting_Gun), "_bulletCountCache");
-        cacheField?.SetValue(gunSetting, -1);
+        cacheField?.SetValue(gunSetting, 0);
         return strippedBullets;
     }
 }
