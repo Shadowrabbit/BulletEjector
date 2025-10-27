@@ -36,4 +36,6 @@
     <ItemGroup>
         <Folder Include="Patch\"/>
     </ItemGroup>
+
+	<!-- Remove explicit Compile includes to avoid NETSDK1022; SDK includes all .cs by default -->
 </Project>

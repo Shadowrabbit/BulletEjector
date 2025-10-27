@@ -7,17 +7,16 @@
 //    *(__\_\        @Copyright  Copyright (c) 2025, Shadowrabbit
 // ******************************************************************
 
-using Duckov.Modding;
 using HarmonyLib;
 using UnityEngine;
 
-namespace BulletEjector.Main;
+namespace BulletEjector;
 
 /// <summary>
 /// BulletEjector Mod主入口类
 /// 负责初始化Harmony补丁和Mod功能
 /// </summary>
-public class BulletEjectorMod : ModBehaviour
+public class ModBehaviour : Duckov.Modding.ModBehaviour
 {
     /// <summary>
     /// Harmony实例，用于应用补丁
