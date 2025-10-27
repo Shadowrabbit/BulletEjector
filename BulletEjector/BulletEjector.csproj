@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <DuckovPath>D:\SteamLibrary\steamapps\common\Escape from Duckov</DuckovPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Reference Include="$(DuckovPath)\Duckov_Data\Managed\TeamSoda.*"/>
+        <Reference Include="$(DuckovPath)\Duckov_Data\Managed\ItemStatsSystem.dll"/>
+        <Reference Include="$(DuckovPath)\Duckov_Data\Managed\Unity*"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Patch\" />
+    </ItemGroup>
+</Project>
