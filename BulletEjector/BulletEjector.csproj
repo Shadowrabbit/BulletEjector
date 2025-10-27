@@ -11,9 +11,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Reference Include="$(DuckovPath)\Duckov_Data\Managed\TeamSoda.*"/>
-        <Reference Include="$(DuckovPath)\Duckov_Data\Managed\ItemStatsSystem.dll"/>
-        <Reference Include="$(DuckovPath)\Duckov_Data\Managed\Unity*"/>
+        <Reference Include="$(DuckovPath)\Duckov_Data\Managed\TeamSoda.*">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="$(DuckovPath)\Duckov_Data\Managed\ItemStatsSystem.dll">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="$(DuckovPath)\Duckov_Data\Managed\Unity*">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="0Harmony">
+          <HintPath>D:\SteamLibrary\steamapps\workshop\content\3167020\3589088839\0Harmony.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>

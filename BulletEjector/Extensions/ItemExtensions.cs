@@ -1,6 +1,6 @@
 ﻿// ******************************************************************
 //       /\ /|       @file       ItemExtensions.cs
-//       \ V/        @brief      
+//       \ V/        @brief      物品扩展方法
 //       | "")       @author     Shadowrabbit, yingtu0401@gmail.com
 //       /  |                    
 //      /  \\        @Modified   2025-10-27 02:59:42
@@ -8,6 +8,7 @@
 // ******************************************************************
 
 using System.Collections.Generic;
+using HarmonyLib;
 using ItemStatsSystem;
 
 namespace BulletEjector.Extensions;
@@ -23,37 +24,37 @@ public static class ItemExtensions
     public static List<Item> StripBullets(this Item weapon)
     {
         var strippedBullets = new List<Item>();
-
         if (weapon == null)
+        {
             return strippedBullets;
+        }
 
         var gunSetting = weapon.GetComponent<ItemSetting_Gun>();
         if (gunSetting == null)
+        {
             return strippedBullets;
+        }
 
-        // 获取武器内的所有子弹（在TakeOutAllBullets之前）
-        var bulletsInGun = new List<Item>();
+        // 手动移除武器内的所有子弹，不调用TakeOutAllBullets
+        var bulletsToRemove = new List<Item>();
         foreach (var bullet in weapon.Inventory)
         {
             if (bullet != null && bullet.GetBool("IsBullet"))
             {
-                bulletsInGun.Add(bullet);
+                bulletsToRemove.Add(bullet);
             }
         }
 
-        // 使用现有的TakeOutAllBullets方法
-        gunSetting.TakeOutAllBullets();
-        // 返回被剥离的子弹
-        return bulletsInGun;
-    }
+        // 从武器中移除子弹（使用公开API）
+        foreach (var bullet in bulletsToRemove)
+        {
+            weapon.Inventory.RemoveItem(bullet);
+            strippedBullets.Add(bullet);
+        }
 
-    /// <summary>
-    /// 检查物品是否是武器
-    /// </summary>
-    /// <param name="item">物品</param>
-    /// <returns>是否是武器</returns>
-    public static bool IsWeapon(this Item item)
-    {
-        return item != null && item.GetComponent<ItemSetting_Gun>() != null;
+        // 使内部缓存失效，下一次读取时会根据Inventory重新计算
+        var cacheField = AccessTools.Field(typeof(ItemSetting_Gun), "_bulletCountCache");
+        cacheField?.SetValue(gunSetting, -1);
+        return strippedBullets;
     }
 }
