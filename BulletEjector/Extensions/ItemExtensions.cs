@@ -52,9 +52,9 @@ public static class ItemExtensions
             strippedBullets.Add(bulletItem);
         }
 
-        // 使内部缓存失效，下一次读取时会根据Inventory重新计算
+        // 将缓存设置为-1，强制UI重新计算子弹数量
         var cacheField = AccessTools.Field(typeof(ItemSetting_Gun), "_bulletCountCache");
-        cacheField?.SetValue(gunSetting, 0);
+        cacheField?.SetValue(gunSetting, -1);
         return strippedBullets;
     }
 }
