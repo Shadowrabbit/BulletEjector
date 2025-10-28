@@ -52,9 +52,9 @@ public static class ItemExtensions
             strippedBullets.Add(bulletItem);
         }
 
-        // 将缓存设置为-1，强制UI重新计算子弹数量
-        var cacheField = AccessTools.Field(typeof(ItemSetting_Gun), "_bulletCountCache");
-        cacheField?.SetValue(gunSetting, -1);
+        // 通过Harmony调用private的bulletCount setter，这会触发UI刷新
+        var bulletCountSetter = AccessTools.PropertySetter(typeof(ItemSetting_Gun), "bulletCount");
+        bulletCountSetter?.Invoke(gunSetting, [0]);
         return strippedBullets;
     }
 }
